@@ -1,14 +1,12 @@
+import React, {FC} from "react";
 import {StyleSheet, View} from 'react-native';
-import Home from "./src/screens/Home";
+import Tasks from "../components/Task";
 
-const App = ()=> {
-  return (
-    <View style={styles.container}>
-      <Home/>
+const Home: FC = () => (
+    <View style={styles.container} >
+        <Tasks/>
     </View>
-  );
-}
-
+);
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
@@ -17,4 +15,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
-export default App;
+
+export default Home;
