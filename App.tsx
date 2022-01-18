@@ -1,20 +1,35 @@
-import {StyleSheet, View} from 'react-native';
+import React from "react";
+import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import Home from "./src/screens/Home";
+import CreateTask from "./src/screens/CreateTask";
+import {TouchableWithoutFeedback} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
 
-const App = ()=> {
+export default function App() {
+    const Stack = createNativeStackNavigator();
   return (
-    <View style={styles.container}>
-      <Home/>
-    </View>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="Tasks"
+                    component={Home}
+                    options={({navigation}) => ({
+                        headerRight: () => (
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate('CreateTask')}>
+                                <Ionicons
+                                    name={'ios-add'}
+                                    size={34}
+                                    color={'#0080ff'}
+                                    style={{marginRight:25}} />
+                            </TouchableWithoutFeedback>
+                        )
+                    })}
+                />
+                <Stack.Screen name="CreateTask" component={CreateTask}/>
+            </Stack.Navigator>
+        </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
-export default App;
+

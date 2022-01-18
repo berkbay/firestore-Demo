@@ -8,11 +8,9 @@ const Tasks:FC = () => {
 
     const [ tasks, setTasks ] = useState<TaskType[]>()
 
-
     useEffect(() => {
         getTasks().then(tasks => setTasks(tasks))
     },[])
-
 
     return (
         <View>
