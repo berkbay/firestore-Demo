@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
+import {TaskType} from "../Types";
 
 const configuration= {
      apiKey: "AIzaSyBlAzg0NQnu7xeNRWFwtdebH2f86ojd2bo",
@@ -14,5 +15,17 @@ const configuration= {
 firebase.initializeApp(configuration)
 
 const db = firebase.firestore();
+
+export const getTasks = (): Promise<TaskType[]> => {
+     return db.collection('tasks')
+         .get()
+         .then((result) => result.docs)
+         .then(docs => docs.map(doc => ({
+              id: doc.id,
+              name: doc.data().name,
+              createdAt: doc.data().createdAt,
+              completedAt: doc.data().completedAt
+         })))
+}
 
 export default db;
