@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
 import {View} from "react-native";
-import {streamTasks} from "../db/firestore";
+import db, {streamTasks} from "../db/firestore";
 import {TaskType} from "../Types";
 import TaskItem from "./TaskItem";
 
@@ -18,13 +18,14 @@ const Tasks:FC = () => {
     }
 
     useEffect(() => {
-        streamTasks({
+        const unsubscribe =  streamTasks({
             next: querySnapshot => {
                 const tasks = querySnapshot.docs.map(docSnapshot => mapDocToTask(docSnapshot))
                 setTasks(tasks)
             },
             error: (error) => console.log(error)
         })
+        return unsubscribe
     },[setTasks])
 
     return (
