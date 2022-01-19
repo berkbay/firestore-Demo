@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useLayoutEffect} from "react";
-import {ActivityIndicator, Alert, TouchableWithoutFeedback, View} from "react-native";
+import {ActivityIndicator, Alert, View} from "react-native";
 import TaskForm from "../components/TaskForm";
 import {deleteTask, findTask, updateTask} from "../db/firestore";
 import {useNavigation, useRoute} from "@react-navigation/native";
-import {Ionicons} from "@expo/vector-icons";
+import HeaderRightButton from "../components/HeaderRightButton";
 
 const UpdateTask = () => {
 
@@ -19,10 +19,11 @@ const UpdateTask = () => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableWithoutFeedback
+                <HeaderRightButton
+                    icon={'trash'}
                     onPress={() => {
-                        // we add a question to avoid a wrong deletion
-                        Alert.alert(
+                    // we add a question to avoid a wrong deletion
+                    Alert.alert(
                             'Delete Task?',
                             name,
                             [
@@ -33,21 +34,11 @@ const UpdateTask = () => {
                                 },
                                 {
                                     text: 'Delete',
-                                    onPress: () =>
-                                        deleteTask(taskId).then(() => navigation.navigate('Tasks')),
-                                    style: 'destructive'
-                                }
+                                    onPress: () => deleteTask(taskId).then(() => navigation.navigate('Tasks')),
+                                    style: 'destructive'}
                             ]
                         )
-                    }}
-                >
-                    <Ionicons
-                        name={'ios-trash'}
-                        size={35}
-                        style={{marginRight:25}}
-                        color={'#0080ff'}
-                    />
-                </TouchableWithoutFeedback>
+                    }}/>
             )
         })
     })
