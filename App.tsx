@@ -5,6 +5,7 @@ import Home from "./src/screens/Home";
 import CreateTask from "./src/screens/CreateTask";
 import {TouchableWithoutFeedback} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
+import UpdateTask from "./src/screens/UpdateTask";
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ export default function App() {
                     })}
                 />
                 <Stack.Screen name="CreateTask" component={CreateTask}/>
+                <Stack.Screen name="UpdateTask" component={UpdateTask}/>
             </Stack.Navigator>
         </NavigationContainer>
   );

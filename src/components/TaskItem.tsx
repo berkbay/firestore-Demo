@@ -20,7 +20,7 @@ const TaskItem: FC<Props> = ({item}: Props) => {
     }
 
     return(
-        <TouchableOpacity onPress={ () => navigation.navigate } style={styles.taskItem}>
+        <TouchableOpacity onPress={ () => navigation.navigate('UpdateTask', {taskId: item.id}) } style={styles.taskItem}>
             <Text>{item.name}</Text>
             <CheckBox
                 value={!!item.completedAt}
