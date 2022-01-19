@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useLayoutEffect} from "react";
 import {ActivityIndicator, Alert, TouchableWithoutFeedback, View} from "react-native";
 import TaskForm from "../components/TaskForm";
-import db from "../db/firestore";
+import {deleteTask, findTask, updateTask} from "../db/firestore";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
 
@@ -10,12 +10,13 @@ const UpdateTask = () => {
     const navigation = useNavigation()
     // we change to page so we use useRoute for properties
     const route = useRoute()
+
     const [name, setName] = useState<undefined | string>(undefined)
 
     const { taskId } = route.params
 
     // delete documents
-    React.useLayoutEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <TouchableWithoutFeedback
@@ -33,10 +34,7 @@ const UpdateTask = () => {
                                 {
                                     text: 'Delete',
                                     onPress: () =>
-                                        db.collection('tasks')
-                                            .doc(taskId)
-                                            .delete()
-                                            .then(() => navigation.navigate('Tasks')),
+                                        deleteTask(taskId).then(() => navigation.navigate('Tasks')),
                                     style: 'destructive'
                                 }
                             ]
@@ -56,17 +54,9 @@ const UpdateTask = () => {
 
     // uptade here name,
     useEffect(() => {
-        db.collection('tasks')
-            .doc(taskId)
-            .get()
-            .then(doc => {
-                if (doc) {
-                    const name = doc.data()?.name
-                    setName(name)
-                }else{
-                    throw new Error('item-does-not-exist')
-                }
-            })
+        findTask(taskId)
+            .then(task => setName(task.name))
+            .catch(err => console.log(err))
     },[taskId])
 
     return (
@@ -74,7 +64,7 @@ const UpdateTask = () => {
             {
                 name
                     ? <TaskForm onSubmit={(values => {
-                        db.collection('tasks').doc(taskId).update({
+                        updateTask(taskId, {
                             name: values.name
                         }).then(result => navigation.navigate('Tasks'))
                             .catch(err => console.log(err))

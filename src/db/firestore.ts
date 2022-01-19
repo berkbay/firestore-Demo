@@ -28,8 +28,43 @@ export const getTasks = (): Promise<TaskType[]> => {
          })))
 }
 
+export const updateTask = (taskId: string, taskUpdatedTo) =>{
+    return db.collection('tasks').doc(taskId).update(taskUpdatedTo)
+}
+
+export const createTask = (task) => {
+    return db.collection('tasks').add(task)
+}
+
 export const streamTasks = (observer) => {
     db.collection('tasks').onSnapshot(observer)
+}
+
+export const deleteTask = (taskId: string) => {
+    return db.collection('tasks')
+        .doc(taskId)
+        .delete()
+}
+
+export const findTask = (taskId: string): Promise<TaskType> => {
+    return (
+        db.collection('tasks')
+            .doc(taskId)
+            .get()
+            .then(doc => {
+                if (doc) {
+                    const name = doc.data()?.name
+                    return {
+                        id: doc.id,
+                        name: doc.data()?.name,
+                        createdAt: doc.data()?.createdAt,
+                        completedAt: doc.data()?.completedAt
+                    } as TaskType
+                }else{
+                    throw new Error('item-does-not-exist')
+                }
+            })
+    );
 }
 
 export default db;

@@ -1,6 +1,6 @@
 import React from "react";
 import {View} from "react-native";
-import db from "../db/firestore";
+import {createTask} from "../db/firestore";
 import {useNavigation} from "@react-navigation/native";
 import TaskForm from "../components/TaskForm";
 
@@ -12,7 +12,7 @@ const CreateTask = () => {
     return (
         <View>
             <TaskForm onSubmit={(values => {
-                db.collection('tasks').add({
+                createTask({
                     name: values.name,
                     createdAt: new Date(),
                     completedAt: null

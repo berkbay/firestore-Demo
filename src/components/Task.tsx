@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
 import {View} from "react-native";
-import db, {streamTasks} from "../db/firestore";
+import {streamTasks} from "../db/firestore";
 import {TaskType} from "../Types";
 import TaskItem from "./TaskItem";
 
