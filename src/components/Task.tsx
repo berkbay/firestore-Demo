@@ -58,8 +58,6 @@ const Tasks:FC = () => {
                 data={snapshots.map(mapDocToTask)}
                 extraData={snapshots.map(mapDocToTask)}
                 onEndReachedThreshold={0}
-                onRefresh={refresh}
-                refreshing={isRefreshing}
                 onEndReached={() => fetchMore()}
                 renderItem={({item}) => <TaskItem key={item.id} item={item} onChecked={onChecked}/>}
             />

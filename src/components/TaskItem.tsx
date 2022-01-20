@@ -14,8 +14,6 @@ const TaskItem: FC<Props> = ({item, onChecked}: Props) => {
 
     const navigation = useNavigation()
     const isCompleted = !!item.completedAt
-    console.log('DEBUG isCompleted', isCompleted)
-
     const completedStyle = isCompleted ? styles.completed : {}
 
 
