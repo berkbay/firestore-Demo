@@ -19,7 +19,7 @@ const TaskItem: FC<Props> = ({item}: Props) => {
         <TouchableOpacity
             onPress={() => navigation.navigate('UpdateTask', {taskId: item.id})}
         >
-            <View style={{...styles.taskItem, ...completedStyle}}>
+            <View style={{...styles.taskItem, ... completedStyle}}>
                 <Text style={isCompleted && styles.completedText}>{item.name}</Text>
                 <CheckBox
                     value={!!item.completedAt}

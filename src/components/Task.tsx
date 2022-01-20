@@ -1,38 +1,35 @@
 import React, {FC, useEffect, useState} from "react";
-import {View} from "react-native";
-import {streamTasks} from "../db/firestore";
-import {TaskType} from "../Types";
+import {FlatList, View} from "react-native";
+import {DocumentSnapshot, getPaginatedTasks, mapDocToTask} from "../db/firestore";
 import TaskItem from "./TaskItem";
 
 const Tasks:FC = () => {
 
-    const [ tasks, setTasks ] = useState<TaskType[]>()
+    const [ snapshots, setSnapshots ] = useState<DocumentSnapshot[]>([])
 
-    const mapDocToTask = (document): TaskType => {
-        return {
-            id: document.id,
-            name: document.data().name,
-            createdAt: document.data().createdAt,
-            completedAt: document.data().completedAt,
-        }
+
+    function getLastItem<T>(arr: T[]): T | undefined {
+        return arr.slice(-1)[0];
     }
 
-    useEffect(() => {
-        const unsubscribe =  streamTasks({
-            next: querySnapshot => {
-                const tasks = querySnapshot.docs.map(docSnapshot => mapDocToTask(docSnapshot))
-                setTasks(tasks)
-            },
-            error: (error) => console.log(error)
-        })
-        return unsubscribe
-    },[setTasks])
+    const fetchMore = () => {
+        console.log('fecthMore called')
+        void getPaginatedTasks(getLastItem(snapshots), 20)
+            .then((newSnapshots) =>
+                setSnapshots(snapshots.concat(newSnapshots.docs))
+            );
+    }
+
+    useEffect(() => fetchMore(), [])
 
     return (
-        <View>
-            {
-                tasks?.map(task => <TaskItem key={task.id} item={task}/>)
-            }
+        <View style={{flex:1}}>
+            <FlatList
+                data={snapshots.map(mapDocToTask)}
+                onEndReachedThreshold={0}
+                onEndReached={() => fetchMore()}
+                renderItem={({item}) => <TaskItem key={item.id} item={item}/>}
+            />
         </View>
     );
 };

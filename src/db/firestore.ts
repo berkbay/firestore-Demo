@@ -1,6 +1,7 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
 import {TaskType} from "../Types";
+import {number} from "yup";
 
 const configuration= {
      apiKey: "AIzaSyBlAzg0NQnu7xeNRWFwtdebH2f86ojd2bo",
@@ -16,15 +17,33 @@ firebase.initializeApp(configuration)
 
 const db = firebase.firestore();
 
+export type DocumentSnapshot = firebase.firestore.DocumentSnapshot;
+export type DocumentData = firebase.firestore.DocumentData;
+
+export type FirebaseObserver = {
+    next?: (snapshot: firebase.firestore.QuerySnapshot<DocumentData>) => void;
+    error?: (error: Error) => void;
+    complete: () => void;
+}
+
 export const updateTask = (taskId: string, taskUpdatedTo) =>{
     return db.collection('tasks').doc(taskId).update(taskUpdatedTo)
 }
 
-export const createTask = (task) => {
+export const createTask = (task: TaskType) => {
     return db.collection('tasks').add(task)
 }
 
-export const streamTasks = (observer) => {
+export const getPaginatedTasks = (afterDoc: DocumentSnapshot | undefined, limit: number) => {
+    const queryRef = db
+        .collection('tasks')
+        .orderBy('createdAt', 'desc')
+        .limit(limit)
+
+    return (afterDoc ? queryRef.startAfter(afterDoc) : queryRef).get()
+}
+
+export function streamTasks  (observer: FirebaseObserver)  {
     db.collection('tasks')
         .orderBy('createdAt', 'desc')
         .onSnapshot(observer)
@@ -55,6 +74,15 @@ export const findTask = (taskId: string): Promise<TaskType> => {
                 }
             })
     );
+}
+
+export const mapDocToTask = (document: DocumentSnapshot): TaskType => {
+    return {
+        id: document.id,
+        name: document.data()?.name as string,
+        createdAt: document.data()?.createdAt as Date,
+        completedAt: (document.data()?.completedAt as Date) || null,
+    }
 }
 
 export default db;
