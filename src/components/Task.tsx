@@ -1,7 +1,8 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useCallback, useState} from "react";
 import {FlatList, View} from "react-native";
-import {DocumentSnapshot, getPaginatedTasks, mapDocToTask} from "../db/firestore";
+import {DocumentSnapshot, getPaginatedTasks, mapDocToTask,} from "../db/firestore";
 import TaskItem from "./TaskItem";
+import {useFocusEffect} from "@react-navigation/native";
 
 const Tasks:FC = () => {
 
@@ -14,13 +15,22 @@ const Tasks:FC = () => {
 
     const fetchMore = () => {
         console.log('fecthMore called')
-        void getPaginatedTasks(getLastItem(snapshots), 20)
-            .then((newSnapshots) =>
-                setSnapshots(snapshots.concat(newSnapshots.docs))
-            );
+        void getPaginatedTasks(getLastItem(snapshots), 20).then((newSnapshots) =>
+            setSnapshots(snapshots.concat(newSnapshots.docs))
+        );
+    };
+
+    const refresh = () => {
+        void getPaginatedTasks(undefined, 20).then((newSnapshots) =>
+            setSnapshots(newSnapshots.docs)
+        );
     }
 
-    useEffect(() => fetchMore(), [])
+    useFocusEffect(
+        useCallback(() => {
+            refresh()
+        }, [])
+    )
 
     return (
         <View style={{flex:1}}>
