@@ -1,6 +1,6 @@
 import React, {FC, useState} from "react";
 import {Feather} from "@expo/vector-icons";
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {TouchableOpacity} from "react-native";
 
 type Props = {
     value: boolean

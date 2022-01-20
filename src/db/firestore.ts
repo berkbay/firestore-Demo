@@ -16,18 +16,6 @@ firebase.initializeApp(configuration)
 
 const db = firebase.firestore();
 
-export const getTasks = (): Promise<TaskType[]> => {
-     return db.collection('tasks')
-         .get()
-         .then((result) => result.docs)
-         .then(docs => docs.map(doc => ({
-              id: doc.id,
-              name: doc.data().name,
-              createdAt: doc.data().createdAt,
-              completedAt: doc.data().completedAt
-         })))
-}
-
 export const updateTask = (taskId: string, taskUpdatedTo) =>{
     return db.collection('tasks').doc(taskId).update(taskUpdatedTo)
 }
@@ -37,7 +25,9 @@ export const createTask = (task) => {
 }
 
 export const streamTasks = (observer) => {
-    db.collection('tasks').onSnapshot(observer)
+    db.collection('tasks')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(observer)
 }
 
 export const deleteTask = (taskId: string) => {

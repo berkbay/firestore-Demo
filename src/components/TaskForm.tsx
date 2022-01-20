@@ -37,7 +37,6 @@ const TaskForm: FC<Props> = ({onSubmit, name, btnValue}: Props) => {
                         value={values.name}
                         autoFocus={true}
                         style={styles.textInput}
-
                     />
                     {errors['name'] ? <Text style={styles.error}>{errors['name']}</Text>: null}
                     <Button title={btnValue} onPress={() => handleSubmit()} />

@@ -9,7 +9,7 @@ const Home: FC = () => (
 );
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: '#99dde6',
         flex: 1,
         alignItems: 'center',
     },

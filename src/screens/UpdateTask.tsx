@@ -10,10 +10,8 @@ const UpdateTask = () => {
     const navigation = useNavigation()
     // we change to page so we use useRoute for properties
     const route = useRoute()
-
-    const [name, setName] = useState<undefined | string>(undefined)
-
     const { taskId } = route.params
+    const [name, setName] = useState<undefined | string>(undefined)
 
     // delete documents
     useLayoutEffect(() => {

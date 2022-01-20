@@ -12,18 +12,21 @@ type Props = {
 const TaskItem: FC<Props> = ({item}: Props) => {
 
     const navigation = useNavigation()
+    const isCompleted = !!item.completedAt
+    const completedStyle = isCompleted ? styles.completed : {}
 
     return(
         <TouchableOpacity
             onPress={() => navigation.navigate('UpdateTask', {taskId: item.id})}
-            style={styles.taskItem}
         >
-            <Text>{item.name}</Text>
-            <CheckBox
-                value={!!item.completedAt}
-                onValueChange={(isChecked) => updateTask(item.id, {
-                    completedAt: isChecked ? new Date() : null
-                })}/>
+            <View style={{...styles.taskItem, ...completedStyle}}>
+                <Text style={isCompleted && styles.completedText}>{item.name}</Text>
+                <CheckBox
+                    value={!!item.completedAt}
+                    onValueChange={(isChecked) => updateTask(item.id, {
+                        completedAt: isChecked ? new Date() : null
+                    })}/>
+            </View>
         </TouchableOpacity>
     );
 }
@@ -34,10 +37,18 @@ const styles = StyleSheet.create({
     taskItem: {
         flexDirection: "row",
         borderWidth: 2,
-        marginVertical: 10,
+        marginTop: 15,
         borderRadius: 5,
         paddingVertical: 5,
-        width: 300,
+        paddingHorizontal: 5,
+        width: 325,
         justifyContent: 'space-between',
+        backgroundColor: '#fff'
     },
+    completed: {
+        opacity: 0.4
+    },
+    completedText: {
+        textDecorationLine: 'line-through'
+    }
 })

@@ -1,5 +1,4 @@
-import {Alert, TouchableWithoutFeedback} from "react-native";
-import {deleteTask} from "../db/firestore";
+import {TouchableWithoutFeedback} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import React, {FC} from "react";
 
