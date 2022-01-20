@@ -7,25 +7,32 @@ import {useNavigation} from "@react-navigation/native";
 
 type Props = {
     item: TaskType
+    onChecked: () => void
 }
 
-const TaskItem: FC<Props> = ({item}: Props) => {
+const TaskItem: FC<Props> = ({item, onChecked}: Props) => {
 
     const navigation = useNavigation()
     const isCompleted = !!item.completedAt
+    console.log('DEBUG isCompleted', isCompleted)
+
     const completedStyle = isCompleted ? styles.completed : {}
+
 
     return(
         <TouchableOpacity
             onPress={() => navigation.navigate('UpdateTask', {taskId: item.id})}
         >
-            <View style={{...styles.taskItem, ... completedStyle}}>
+            <View style={[styles.taskItem, completedStyle]}>
                 <Text style={isCompleted && styles.completedText}>{item.name}</Text>
                 <CheckBox
                     value={!!item.completedAt}
-                    onValueChange={(isChecked) => updateTask(item.id, {
-                        completedAt: isChecked ? new Date() : null
-                    })}/>
+                    onValueChange={(isChecked) => {
+                        if (onChecked) onChecked()
+                        updateTask(item.id, {
+                            completedAt: isChecked ? new Date() : null
+                        })
+                    }}/>
             </View>
         </TouchableOpacity>
     );
