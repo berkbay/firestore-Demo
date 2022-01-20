@@ -1,18 +1,17 @@
 import React, {FC} from "react";
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import Tasks from "../components/Task";
 
 const Home: FC = () => (
-    <View style={styles.container} >
+    <SafeAreaView style={styles.container} >
         <Tasks/>
-    </View>
+    </SafeAreaView>
 );
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
     },
 });
 

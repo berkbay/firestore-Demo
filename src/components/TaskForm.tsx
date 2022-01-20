@@ -1,5 +1,4 @@
-import db from "../db/firestore";
-import {Button, Text, TextInput, View} from "react-native";
+import {Button, Text, TextInput, View, StyleSheet} from "react-native";
 import {Formik} from "formik";
 import React, {FC} from "react";
 import * as yup from "yup";
@@ -36,8 +35,11 @@ const TaskForm: FC<Props> = ({onSubmit, name, btnValue}: Props) => {
                         onChangeText={handleChange('name')}
                         placeholder={'Describe task'}
                         value={values.name}
-                        autoFocus={true} />
-                    {errors['name'] ? <Text>{errors['name']}</Text>: null}
+                        autoFocus={true}
+                        style={styles.textInput}
+
+                    />
+                    {errors['name'] ? <Text style={styles.error}>{errors['name']}</Text>: null}
                     <Button title={btnValue} onPress={() => handleSubmit()} />
                 </View>
             )}
@@ -46,3 +48,20 @@ const TaskForm: FC<Props> = ({onSubmit, name, btnValue}: Props) => {
 }
 
 export default TaskForm;
+
+const styles = StyleSheet.create({
+    textInput: {
+        marginTop: 10,
+        borderRadius: 5,
+        borderWidth: 1,
+        marginHorizontal: 5,
+        height: 30,
+        paddingHorizontal: 3
+    },
+    error: {
+        color: 'red',
+        fontWeight: '700',
+        marginTop: 5,
+        marginHorizontal: 5
+    }
+})

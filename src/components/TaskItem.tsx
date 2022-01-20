@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import CheckBox from "./CheckBox";
 import React, {FC} from "react";
 import {TaskType} from "../Types";
@@ -23,7 +23,7 @@ const TaskItem: FC<Props> = ({item}: Props) => {
                 value={!!item.completedAt}
                 onValueChange={(isChecked) => updateTask(item.id, {
                     completedAt: isChecked ? new Date() : null
-                })} />
+                })}/>
         </TouchableOpacity>
     );
 }
@@ -33,5 +33,11 @@ export default TaskItem;
 const styles = StyleSheet.create({
     taskItem: {
         flexDirection: "row",
-    }
+        borderWidth: 2,
+        marginVertical: 10,
+        borderRadius: 5,
+        paddingVertical: 5,
+        width: 300,
+        justifyContent: 'space-between',
+    },
 })

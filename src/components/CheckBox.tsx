@@ -1,6 +1,6 @@
 import React, {FC, useState} from "react";
 import {Feather} from "@expo/vector-icons";
-import {TouchableOpacity} from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 
 type Props = {
     value: boolean
@@ -27,3 +27,4 @@ const CheckBox:FC<Props> = ({value, onValueChange}:Props) => {
 }
 
 export default CheckBox;
+
